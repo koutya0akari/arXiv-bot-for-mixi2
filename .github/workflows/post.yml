@@ -3,6 +3,7 @@ name: Post arXiv papers to mixi2
 on:
   schedule:
     - cron: "0 4 * * *"
+    - cron: "0 8 6 5 *"
   workflow_dispatch:
 
 permissions:
@@ -12,19 +13,38 @@ jobs:
   post:
     runs-on: ubuntu-latest
     steps:
+      - name: Decide whether to run
+        id: schedule_gate
+        shell: bash
+        run: |
+          jst_today="$(TZ=Asia/Tokyo date +%Y-%m-%d)"
+          should_run=false
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            should_run=true
+          elif [[ "${{ github.event.schedule }}" == "0 4 * * *" ]]; then
+            should_run=true
+          elif [[ "${{ github.event.schedule }}" == "0 8 6 5 *" && "${jst_today}" == "2026-05-06" ]]; then
+            should_run=true
+          fi
+          echo "should_run=${should_run}" >> "${GITHUB_OUTPUT}"
+
       - uses: actions/checkout@v4
+        if: steps.schedule_gate.outputs.should_run == 'true'
         with:
           fetch-depth: 0
 
       - uses: actions/setup-go@v5
+        if: steps.schedule_gate.outputs.should_run == 'true'
         with:
           go-version: "1.24.6"
           cache: true
 
       - name: Test
+        if: steps.schedule_gate.outputs.should_run == 'true'
         run: go test ./...
 
       - name: Run bot
+        if: steps.schedule_gate.outputs.should_run == 'true'
         env:
           MIXI2_MATH_CT_CLIENT_ID: ${{ secrets.MIXI2_MATH_CT_CLIENT_ID }}
           MIXI2_MATH_CT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_CT_CLIENT_SECRET }}
@@ -49,6 +69,7 @@ jobs:
         run: go run ./cmd/arxiv-mixi2-bot
 
       - name: Commit state
+        if: steps.schedule_gate.outputs.should_run == 'true'
         run: |
           if git diff --quiet -- data/posted.json; then
             echo "No state changes"
