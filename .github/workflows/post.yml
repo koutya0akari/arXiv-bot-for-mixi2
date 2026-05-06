@@ -8,7 +8,7 @@ on:
       categories:
         description: "Comma-separated arXiv categories"
         required: false
-        default: "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT"
+        default: "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT,math.OA,math.FA,math.RA"
       post_initial_state:
         description: "Post even when data/posted.json is empty"
         required: false
@@ -64,6 +64,18 @@ jobs:
           MIXI2_MATH_KT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_KT_CLIENT_SECRET }}
           MIXI2_MATH_KT_TOKEN_URL: ${{ secrets.MIXI2_MATH_KT_TOKEN_URL }}
           MIXI2_MATH_KT_API_ADDRESS: ${{ secrets.MIXI2_MATH_KT_API_ADDRESS }}
+          MIXI2_MATH_OA_CLIENT_ID: ${{ secrets.MIXI2_MATH_OA_CLIENT_ID }}
+          MIXI2_MATH_OA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_OA_CLIENT_SECRET }}
+          MIXI2_MATH_OA_TOKEN_URL: ${{ secrets.MIXI2_MATH_OA_TOKEN_URL }}
+          MIXI2_MATH_OA_API_ADDRESS: ${{ secrets.MIXI2_MATH_OA_API_ADDRESS }}
+          MIXI2_MATH_FA_CLIENT_ID: ${{ secrets.MIXI2_MATH_FA_CLIENT_ID }}
+          MIXI2_MATH_FA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_FA_CLIENT_SECRET }}
+          MIXI2_MATH_FA_TOKEN_URL: ${{ secrets.MIXI2_MATH_FA_TOKEN_URL }}
+          MIXI2_MATH_FA_API_ADDRESS: ${{ secrets.MIXI2_MATH_FA_API_ADDRESS }}
+          MIXI2_MATH_RA_CLIENT_ID: ${{ secrets.MIXI2_MATH_RA_CLIENT_ID }}
+          MIXI2_MATH_RA_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_RA_CLIENT_SECRET }}
+          MIXI2_MATH_RA_TOKEN_URL: ${{ secrets.MIXI2_MATH_RA_TOKEN_URL }}
+          MIXI2_MATH_RA_API_ADDRESS: ${{ secrets.MIXI2_MATH_RA_API_ADDRESS }}
         run: |
           args=()
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ inputs.categories }}" ]]; then

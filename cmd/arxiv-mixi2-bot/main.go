@@ -16,7 +16,7 @@ import (
 	"github.com/moriguchiyuusei/arxiv-bot-for-mixi2/internal/state"
 )
 
-const defaultCategories = "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT"
+const defaultCategories = "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT,math.OA,math.FA,math.RA"
 
 type posterFactory func(config.Credentials) (mixi2.Poster, error)
 
