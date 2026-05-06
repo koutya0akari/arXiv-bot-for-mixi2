@@ -79,7 +79,7 @@ jobs:
       - name: Commit state
         if: steps.schedule_gate.outputs.should_run == 'true'
         run: |
-          if git diff --quiet -- data/posted.json; then
+          if [[ -z "$(git status --porcelain -- data/posted.json)" ]]; then
             echo "No state changes"
             exit 0
           fi
