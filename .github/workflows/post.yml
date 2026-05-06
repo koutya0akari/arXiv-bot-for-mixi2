@@ -66,6 +66,14 @@ jobs:
           MIXI2_MATH_NT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_NT_CLIENT_SECRET }}
           MIXI2_MATH_NT_TOKEN_URL: ${{ secrets.MIXI2_MATH_NT_TOKEN_URL }}
           MIXI2_MATH_NT_API_ADDRESS: ${{ secrets.MIXI2_MATH_NT_API_ADDRESS }}
+          MIXI2_MATH_AC_CLIENT_ID: ${{ secrets.MIXI2_MATH_AC_CLIENT_ID }}
+          MIXI2_MATH_AC_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_AC_CLIENT_SECRET }}
+          MIXI2_MATH_AC_TOKEN_URL: ${{ secrets.MIXI2_MATH_AC_TOKEN_URL }}
+          MIXI2_MATH_AC_API_ADDRESS: ${{ secrets.MIXI2_MATH_AC_API_ADDRESS }}
+          MIXI2_MATH_KT_CLIENT_ID: ${{ secrets.MIXI2_MATH_KT_CLIENT_ID }}
+          MIXI2_MATH_KT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_KT_CLIENT_SECRET }}
+          MIXI2_MATH_KT_TOKEN_URL: ${{ secrets.MIXI2_MATH_KT_TOKEN_URL }}
+          MIXI2_MATH_KT_API_ADDRESS: ${{ secrets.MIXI2_MATH_KT_API_ADDRESS }}
         run: go run ./cmd/arxiv-mixi2-bot
 
       - name: Commit state

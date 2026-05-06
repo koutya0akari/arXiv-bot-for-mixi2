@@ -7,6 +7,8 @@ arXiv の新着論文を取得し、mixi2 に自動投稿する bot です。デ
 - `math.AT`
 - `math.RT`
 - `math.NT`
+- `math.AC`
+- `math.KT`
 
 カテゴリごとに別々の mixi2 アプリケーションアカウントを使います。
 
@@ -68,7 +70,7 @@ Token URL
 API Address
 ```
 
-カテゴリごとに別アカウントで投稿するため、5 カテゴリ分のアプリケーションを作成します。たとえば次のような対応にします。
+カテゴリごとに別アカウントで投稿するため、7 カテゴリ分のアプリケーションを作成します。たとえば次のような対応にします。
 
 ```text
 math.CT -> 圏論用 bot アプリケーション
@@ -76,11 +78,13 @@ math.AG -> 代数幾何用 bot アプリケーション
 math.AT -> 代数的トポロジー用 bot アプリケーション
 math.RT -> 表現論用 bot アプリケーション
 math.NT -> 数論用 bot アプリケーション
+math.AC -> 可換代数用 bot アプリケーション
+math.KT -> K理論・ホモロジー用 bot アプリケーション
 ```
 
 各アプリケーションで取得した値を、対応する GitHub Secrets に登録します。
 
-カテゴリごとに以下の GitHub Secrets を設定してください。`MATH_CT` の部分はカテゴリに応じて `MATH_AG`, `MATH_AT`, `MATH_RT`, `MATH_NT` に置き換えます。
+カテゴリごとに以下の GitHub Secrets を設定してください。`MATH_CT` の部分はカテゴリに応じて `MATH_AG`, `MATH_AT`, `MATH_RT`, `MATH_NT`, `MATH_AC`, `MATH_KT` に置き換えます。
 
 ```text
 MIXI2_MATH_CT_CLIENT_ID
@@ -97,7 +101,7 @@ Client Secret は秘密情報です。README、ソースコード、ログ、`da
 
 ## CLI オプション
 
-- `--categories`: カンマ区切りの arXiv カテゴリ一覧。デフォルトは `math.CT,math.AG,math.AT,math.RT,math.NT` です。
+- `--categories`: カンマ区切りの arXiv カテゴリ一覧。デフォルトは `math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT` です。
 - `--state`: 投稿済み ID を保存する JSON ファイルのパス。デフォルトは `data/posted.json` です。
 - `--dry-run`: 投稿も state 保存も行わず、処理内容だけをログ出力します。
 - `--initialize-only`: 投稿せず、取得した論文 ID を投稿済みとして記録します。
