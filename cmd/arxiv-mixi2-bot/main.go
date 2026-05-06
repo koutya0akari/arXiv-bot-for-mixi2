@@ -22,12 +22,13 @@ type posterFactory func(config.Credentials) (mixi2.Poster, error)
 
 func main() {
 	var (
-		categoriesFlag = flag.String("categories", defaultCategories, "comma-separated arXiv categories")
-		statePath      = flag.String("state", "data/posted.json", "path to posted state JSON")
-		dryRun         = flag.Bool("dry-run", false, "print planned posts without posting or saving state")
-		initializeOnly = flag.Bool("initialize-only", false, "record fetched papers without posting")
-		postInterval   = flag.Duration("post-interval", 4*time.Second, "delay between posts in one category")
-		requestTimeout = flag.Duration("request-timeout", 30*time.Second, "timeout for arXiv and mixi2 requests")
+		categoriesFlag    = flag.String("categories", defaultCategories, "comma-separated arXiv categories")
+		statePath         = flag.String("state", "data/posted.json", "path to posted state JSON")
+		dryRun            = flag.Bool("dry-run", false, "print planned posts without posting or saving state")
+		initializeOnly    = flag.Bool("initialize-only", false, "record fetched papers without posting")
+		initializeOnEmpty = flag.Bool("initialize-on-empty", true, "record fetched papers without posting when state is empty")
+		postInterval      = flag.Duration("post-interval", 4*time.Second, "delay between posts in one category")
+		requestTimeout    = flag.Duration("request-timeout", 30*time.Second, "timeout for arXiv and mixi2 requests")
 	)
 	flag.Parse()
 
@@ -42,7 +43,7 @@ func main() {
 		log.Fatalf("load state: %v", err)
 	}
 	initialRun := store.IsEmpty()
-	if initialRun {
+	if initialRun && *initializeOnEmpty {
 		log.Printf("state is empty; running in initialize-only mode")
 	}
 
@@ -52,7 +53,8 @@ func main() {
 	hadError := false
 
 	for _, category := range categories {
-		if err := runCategory(ctx, category, store, httpClient, *dryRun, *initializeOnly || initialRun, *postInterval, *requestTimeout, newMixi2Poster); err != nil {
+		initializeCategory := *initializeOnly || (initialRun && *initializeOnEmpty)
+		if err := runCategory(ctx, category, store, httpClient, *dryRun, initializeCategory, *postInterval, *requestTimeout, newMixi2Poster); err != nil {
 			hadError = true
 			log.Printf("category %s failed: %v", category, err)
 		}

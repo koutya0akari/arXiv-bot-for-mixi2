@@ -5,6 +5,16 @@ on:
     - cron: "0 4 * * *"
     - cron: "0 8 6 5 *"
   workflow_dispatch:
+    inputs:
+      categories:
+        description: "Comma-separated arXiv categories"
+        required: false
+        default: "math.CT,math.AG,math.AT,math.RT,math.NT,math.AC,math.KT"
+      post_initial_state:
+        description: "Post even when data/posted.json is empty"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -74,7 +84,15 @@ jobs:
           MIXI2_MATH_KT_CLIENT_SECRET: ${{ secrets.MIXI2_MATH_KT_CLIENT_SECRET }}
           MIXI2_MATH_KT_TOKEN_URL: ${{ secrets.MIXI2_MATH_KT_TOKEN_URL }}
           MIXI2_MATH_KT_API_ADDRESS: ${{ secrets.MIXI2_MATH_KT_API_ADDRESS }}
-        run: go run ./cmd/arxiv-mixi2-bot
+        run: |
+          args=()
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ inputs.categories }}" ]]; then
+            args+=(--categories "${{ inputs.categories }}")
+          fi
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.post_initial_state }}" == "true" ]]; then
+            args+=(--initialize-on-empty=false)
+          fi
+          go run ./cmd/arxiv-mixi2-bot "${args[@]}"
 
       - name: Commit state
         if: steps.schedule_gate.outputs.should_run == 'true'

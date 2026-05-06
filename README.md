@@ -105,6 +105,7 @@ Client Secret は秘密情報です。README、ソースコード、ログ、`da
 - `--state`: 投稿済み ID を保存する JSON ファイルのパス。デフォルトは `data/posted.json` です。
 - `--dry-run`: 投稿も state 保存も行わず、処理内容だけをログ出力します。
 - `--initialize-only`: 投稿せず、取得した論文 ID を投稿済みとして記録します。
+- `--initialize-on-empty`: `data/posted.json` が空のときに投稿せず初期化だけ行うかを指定します。デフォルトは `true` です。
 - `--post-interval`: 同一カテゴリ内の投稿間隔。デフォルトは `4s` です。
 - `--request-timeout`: arXiv 取得と mixi2 投稿のタイムアウト。デフォルトは `30s` です。
 
