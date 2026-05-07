@@ -13,6 +13,11 @@ type Credentials struct {
 	APIAddress   string
 }
 
+const (
+	TokenURLEnv   = "MIXI2_TOKEN_URL"
+	APIAddressEnv = "MIXI2_API_ADDRESS"
+)
+
 func EnvPrefix(category string) string {
 	replacer := strings.NewReplacer(".", "_", "-", "_")
 	return "MIXI2_" + strings.ToUpper(replacer.Replace(category))
@@ -23,8 +28,8 @@ func LoadCredentials(category string) (Credentials, error) {
 	creds := Credentials{
 		ClientID:     os.Getenv(prefix + "_CLIENT_ID"),
 		ClientSecret: os.Getenv(prefix + "_CLIENT_SECRET"),
-		TokenURL:     os.Getenv(prefix + "_TOKEN_URL"),
-		APIAddress:   os.Getenv(prefix + "_API_ADDRESS"),
+		TokenURL:     os.Getenv(TokenURLEnv),
+		APIAddress:   os.Getenv(APIAddressEnv),
 	}
 
 	var missing []string
@@ -35,10 +40,10 @@ func LoadCredentials(category string) (Credentials, error) {
 		missing = append(missing, prefix+"_CLIENT_SECRET")
 	}
 	if creds.TokenURL == "" {
-		missing = append(missing, prefix+"_TOKEN_URL")
+		missing = append(missing, TokenURLEnv)
 	}
 	if creds.APIAddress == "" {
-		missing = append(missing, prefix+"_API_ADDRESS")
+		missing = append(missing, APIAddressEnv)
 	}
 	if len(missing) > 0 {
 		return Credentials{}, fmt.Errorf("missing environment variables for %s: %s", category, strings.Join(missing, ", "))
