@@ -52,7 +52,7 @@ go run ./cmd/arxiv-mixi2-bot --categories math.CT,math.AG
 
 ## GitHub Actions
 
-`.github/workflows/post.yml` は毎日 13:00 JST に実行されます。新しい投稿済み ID が記録された場合は、`data/posted.json` を自動で commit します。
+`.github/workflows/post.yml` は毎日 13:17 JST に実行されます。新しい投稿済み ID が記録された場合は、`data/posted.json` を自動で commit します。
 
 ## mixi2 側の設定
 
