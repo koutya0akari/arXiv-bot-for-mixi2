@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -69,6 +70,7 @@ func main() {
 
 	if hadError {
 		log.Printf("completed with category errors")
+		os.Exit(1)
 	}
 }
 
