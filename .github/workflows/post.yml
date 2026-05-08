@@ -3,6 +3,8 @@ name: Post arXiv papers to mixi2
 on:
   schedule:
     - cron: "17 4 * * *"
+    - cron: "47 4 * * *"
+    - cron: "17 5 * * *"
   workflow_dispatch:
     inputs:
       categories:
@@ -69,6 +71,7 @@ jobs:
           go run ./cmd/arxiv-mixi2-bot "${args[@]}"
 
       - name: Commit state
+        if: always()
         run: |
           if [[ -z "$(git status --porcelain -- data/posted.json)" ]]; then
             echo "No state changes"
